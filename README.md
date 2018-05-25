@@ -1,6 +1,6 @@
-# Typescript startproject
+# Space Nebula
 
-Dit is een leeg startproject voor de oefeningen in CMTTHE01-4 en PRG01-8. 
+Dit is een game gebaseerd op het spaceship spel wat vroeger op de nokia stond. 
 
 ## Het project
 
