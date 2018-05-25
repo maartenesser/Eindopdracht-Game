@@ -14,3 +14,13 @@ Dit is een leeg startproject voor de oefeningen in CMTTHE01-4 en PRG01-8.
 
 ## Bekijken
 Open index.html in `localhost`
+
+## Game uitleg (niet vergeten)
+- Installatie uitleg over het spel
+
+- Controles vna het spel uitleggen
+
+## UML | Klassendiagram (niet vergeten)
+
+## Game moet live staan op een webpage staan (Niet vergeten)
+- Eigen server of kijken of het op een game platform geupload kan worden.
