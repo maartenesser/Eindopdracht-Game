@@ -40,7 +40,6 @@ class Game {
 
         // Check collision between two spaceships
         let hit = this.checkCollision(this.player.getRectangle(), this.enemy.getRectangle())
-        console.log("spaceships hit this" + hit)
 
         requestAnimationFrame(() => this.gameLoop())
     }

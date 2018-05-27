@@ -62,7 +62,6 @@ var Game = (function () {
         this.enemy.update();
         this.lasergun.update();
         var hit = this.checkCollision(this.player.getRectangle(), this.enemy.getRectangle());
-        console.log("spaceships hit this" + hit);
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
     return Game;
@@ -115,6 +114,7 @@ var Player = (function (_super) {
         _this.xspeed = 0;
         _this.yspeed = 0;
         _this.game = g;
+        _this.move();
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
         window.addEventListener("keyup", function (e) { return _this.onKeyUp(e); });
         return _this;
@@ -122,12 +122,15 @@ var Player = (function (_super) {
     Player.prototype.update = function () {
         this.setX(this.getX() + this.xspeed);
         this.setY(this.getY() + this.yspeed);
-        this.move();
-        if (this.getX() >= window.innerWidth) {
+        if (this.getX() >= window.innerWidth - 124 ||
+            this.getX() <= 0 ||
+            this.getY() <= 0 ||
+            this.getY() >= window.innerHeight - 135) {
+            this.yspeed = 0;
             this.xspeed = 0;
         }
-        if (this.getY() > window.innerHeight) {
-            this.yspeed = 0;
+        else {
+            this.move();
         }
     };
     Player.prototype.onKeyDown = function (event) {
