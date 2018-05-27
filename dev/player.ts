@@ -11,6 +11,8 @@ class Player extends GameObject {
         super( x, y, el)
         this.game = g
 
+        this.move()
+
         window.addEventListener("keydown", (e:KeyboardEvent) => this.onKeyDown(e))
         window.addEventListener("keyup", (e:KeyboardEvent) => this.onKeyUp(e))
     }
@@ -19,21 +21,16 @@ class Player extends GameObject {
 
         this.setX( this.getX() + this.xspeed )
         this.setY( this.getY() + this.yspeed )
-        this.move()
-        
-        // console.log("getx " + this.getX())
-        // console.log("gety " + this.getY())
-        // console.log(window.innerWidth)
-        // console.log(window.outerWidth)
-        
 
         // Player needs to stay in the screen
-        if(this.getX() >= window.innerWidth) {
-            this.xspeed = 0
-        }
-
-        if(this.getY() > window.innerHeight) {
-            this.yspeed = 0
+        if( this.getX() >= window.innerWidth - 124 || 
+            this.getX() <= 0 ||
+            this.getY() <= 0 ||
+            this.getY() >= window.innerHeight - 135 ) {
+                this.yspeed = 0
+                this.xspeed = 0
+        } else {
+            this.move()
         }
     
     }
