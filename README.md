@@ -26,4 +26,12 @@ Open index.html in `localhost`
 - Eigen server of kijken of het op een game platform geupload kan worden.
 
 ## Pull request
-Link pull request: https://github.com/lennartbank/prt01-8-eindopdracht/commit/ac524ebb13e08c87cc6502d4991ad301e7b889e7
+Added a singleton pattern for the game to make sure that there is only one instance of the game.
+Added a strategy pattern for weapons to make sure that the player could have more than one weapon arrow.
+Made some minor corrections in the style css.
+
+TODO: Minor changes to make strategy pattern complete.
+
+Link pull request: https://github.com/lennartbank/prt01-8-eindopdracht/pull/1
+Link veranderingen pull request: https://github.com/lennartbank/prt01-8-eindopdracht/commit/ac524ebb13e08c87cc6502d4991ad301e7b889e7
+
