@@ -24,3 +24,6 @@ Open index.html in `localhost`
 
 ## Game moet live staan op een webpage staan (Niet vergeten)
 - Eigen server of kijken of het op een game platform geupload kan worden.
+
+## Pull request
+Link pull request: https://github.com/lennartbank/prt01-8-eindopdracht/commit/ac524ebb13e08c87cc6502d4991ad301e7b889e7
