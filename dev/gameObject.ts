@@ -3,6 +3,7 @@ class GameObject {
     public x:number
     public y:number
     public el:HTMLElement
+    
 
     
     constructor( x:number, y:number, el:string) {
@@ -11,8 +12,7 @@ class GameObject {
         this.y = y
 
         this.el = document.createElement(el)
-        let foreground = document.getElementsByTagName("foreground")[0]
-        foreground.appendChild(this.el)
+        this.move()
     }
 
     public getRectangle(){
@@ -21,6 +21,16 @@ class GameObject {
 
     move():void {
         this.el.style.transform = `translate(${(this.x)}px, ${this.y}px)`
+    }
+
+    drawForeground() {
+        let foreground = document.getElementsByTagName("foreground")[0]
+        foreground.appendChild(this.el)
+    }
+
+    removeForeground() {
+        let foreground = document.getElementsByTagName("foreground")[0]
+        foreground.removeChild(this.el)
     }
 
     getX():number {

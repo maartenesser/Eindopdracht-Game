@@ -12,16 +12,10 @@ class Lasergun extends GameObject {
 
     }
 
-    shoot (x:number):void {
-        if (this.bullets > 0){
-            return
-        } else {
-            this.bullets++
-            this.setY(0)
-            this.setX(x + 10)
-            console.log("shooting methiod is activated")
-
-        }
+    shoot (x:number, y:number):void {
+        this.setX(x)
+        this.setY(y)
+        this.drawForeground()
     }
 
     removeBullet(): void {
@@ -35,8 +29,6 @@ class Lasergun extends GameObject {
     public update(): void {
         this.setY(this.getY() - this.speed)
         this.move()
-        console.log("update of shoot is working")
-
     }
    
 

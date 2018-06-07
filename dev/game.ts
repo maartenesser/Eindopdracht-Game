@@ -12,7 +12,7 @@ class Game {
     private constructor() {
         // this.textfield = document.getElementsByTagName("textfield")[0] as HTMLElement
         
-        this.player = new Player ( window.innerWidth/2, (window.innerHeight - 135), "player", this, )
+        this.player = new Player ( window.innerWidth/2, (window.innerHeight - 135), "player", this)
         this.enemy = new Enemy (0,0, "enemy", this)
         // this.lasergun = new Lasergun (0,0,"lasergun")
         this.gameLoop()

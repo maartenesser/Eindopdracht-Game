@@ -14,14 +14,21 @@ var GameObject = (function () {
         this.x = x;
         this.y = y;
         this.el = document.createElement(el);
-        var foreground = document.getElementsByTagName("foreground")[0];
-        foreground.appendChild(this.el);
+        this.move();
     }
     GameObject.prototype.getRectangle = function () {
         return this.el.getBoundingClientRect();
     };
     GameObject.prototype.move = function () {
         this.el.style.transform = "translate(" + (this.x) + "px, " + this.y + "px)";
+    };
+    GameObject.prototype.drawForeground = function () {
+        var foreground = document.getElementsByTagName("foreground")[0];
+        foreground.appendChild(this.el);
+    };
+    GameObject.prototype.removeForeground = function () {
+        var foreground = document.getElementsByTagName("foreground")[0];
+        foreground.removeChild(this.el);
     };
     GameObject.prototype.getX = function () {
         return this.x;
@@ -108,6 +115,7 @@ var Enemy = (function (_super) {
         var _this = _super.call(this, x, y, el) || this;
         _this.speed = 0;
         _this.game = g;
+        _this.drawForeground();
         return _this;
     }
     Enemy.prototype.update = function () {
@@ -127,16 +135,10 @@ var Lasergun = (function (_super) {
         _this.speed = 20;
         return _this;
     }
-    Lasergun.prototype.shoot = function (x) {
-        if (this.bullets > 0) {
-            return;
-        }
-        else {
-            this.bullets++;
-            this.setY(0);
-            this.setX(x + 10);
-            console.log("shooting methiod is activated");
-        }
+    Lasergun.prototype.shoot = function (x, y) {
+        this.setX(x);
+        this.setY(y);
+        this.drawForeground();
     };
     Lasergun.prototype.removeBullet = function () {
         if (this.bullets >= 1) {
@@ -146,24 +148,25 @@ var Lasergun = (function (_super) {
     Lasergun.prototype.update = function () {
         this.setY(this.getY() - this.speed);
         this.move();
-        console.log("update of shoot is working");
     };
     return Lasergun;
 }(GameObject));
 var Player = (function (_super) {
     __extends(Player, _super);
-    function Player(x, y, el, g, l) {
+    function Player(x, y, el, g) {
         var _this = _super.call(this, x, y, el) || this;
         _this.xspeed = 0;
         _this.yspeed = 0;
         _this.game = g;
-        _this.lasergun = l;
+        _this.lasergun = new Lasergun(_this.getX(), _this.getY(), 'lasergun');
+        _this.drawForeground();
         _this.move();
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
         window.addEventListener("keyup", function (e) { return _this.onKeyUp(e); });
         return _this;
     }
     Player.prototype.update = function () {
+        this.lasergun.update();
         this.setX(this.getX() + this.xspeed);
         this.setY(this.getY() + this.yspeed);
         if (this.getX() >= window.innerWidth - 124 ||
@@ -192,8 +195,7 @@ var Player = (function (_super) {
                 this.yspeed = 5;
                 break;
             case 32:
-                console.log("Spacebar is clicked");
-                this.lasergun.shoot(this.getX());
+                this.lasergun.shoot(this.getX(), this.getY());
                 break;
         }
     };

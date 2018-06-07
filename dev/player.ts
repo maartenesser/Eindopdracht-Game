@@ -6,7 +6,7 @@
 class Player extends GameObject {
     
     private game:Game
-    private lasergun: Lasergun
+    private lasergun:Lasergun
 
     private xspeed:number = 0
     private yspeed:number = 0
@@ -14,12 +14,12 @@ class Player extends GameObject {
 
     // private weapon:Weapon
 
-    constructor(  x:number, y:number, el:string, g:Game, l:Lasergun) { 
+    constructor(  x:number, y:number, el:string, g:Game) { 
         super( x, y, el)
         this.game = g
-        this.lasergun = l
-        // this.lasergun = new Lasergun(this.getX(), this.getY(), "lasergun" );
+        this.lasergun = new Lasergun(this.getX(), this.getY(), 'lasergun')
 
+        this.drawForeground()
         this.move()
 
         window.addEventListener("keydown", (e:KeyboardEvent) => this.onKeyDown(e))
@@ -27,6 +27,8 @@ class Player extends GameObject {
     }
 
     public update():void {
+
+        this.lasergun.update()
 
         this.setX( this.getX() + this.xspeed )
         this.setY( this.getY() + this.yspeed )
@@ -60,9 +62,7 @@ class Player extends GameObject {
                 this.yspeed = 5
                 break
             case 32:
-            // space moet ingeklickt worden om de laser af te vuren.
-                console.log("Spacebar is clicked")
-                this.lasergun.shoot(this.getX())
+                this.lasergun.shoot(this.getX(), this.getY())
                 break
                 }
             }

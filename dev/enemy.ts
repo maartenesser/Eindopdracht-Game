@@ -9,6 +9,7 @@ class Enemy extends GameObject {
     constructor(x:number, y:number, el:string, g:Game) { 
         super(x, y, el, )
         this.game = g
+        this.drawForeground()
 
     }
 
