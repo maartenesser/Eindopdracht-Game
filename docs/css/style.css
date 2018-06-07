@@ -31,7 +31,11 @@ enemy {
     background-image: url(../images/enemy.png);
 }
 lasergun {
-    
+    width: 124px; height: 192px;
+    background-image: url(../images/bullet.png);
+    position: absolute;
+    background-size: cover;
+    z-index: 1;
 }
 
 background {

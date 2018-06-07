@@ -37,11 +37,45 @@ var GameObject = (function () {
     };
     return GameObject;
 }());
+var Bullet = (function (_super) {
+    __extends(Bullet, _super);
+    function Bullet(x, y, el) {
+        var _this = _super.call(this, x, y, el) || this;
+        _this.speed = 10;
+        _this.speedx = 0;
+        _this.speedy = 0;
+        _this.speedx = _this.speed;
+        _this.speedy = _this.speed;
+        return _this;
+    }
+    Bullet.prototype.update = function () {
+        this.x += this.speedx;
+        this.y += this.speedy;
+        console.log("Update bullet is working");
+    };
+    return Bullet;
+}(GameObject));
+var CollisionDetection = (function () {
+    function CollisionDetection(g, p) {
+        this.player = p;
+        this.game = g;
+    }
+    CollisionDetection.prototype.update = function () {
+        this.shootCollision();
+        this.playerCollision();
+    };
+    CollisionDetection.prototype.shootCollision = function () {
+    };
+    CollisionDetection.prototype.playerCollision = function () {
+        var pl;
+    };
+    return CollisionDetection;
+}());
 var Game = (function () {
     function Game() {
+        this.GameObjects = [];
         this.player = new Player(window.innerWidth / 2, (window.innerHeight - 135), "player", this);
         this.enemy = new Enemy(0, 0, "enemy", this);
-        this.lasergun = new Lasergun(0, 0, "lasergun");
         this.gameLoop();
     }
     Game.getInstance = function () {
@@ -60,8 +94,7 @@ var Game = (function () {
         var _this = this;
         this.player.update();
         this.enemy.update();
-        this.lasergun.update();
-        var hit = this.checkCollision(this.player.getRectangle(), this.enemy.getRectangle());
+        var collisionShips = this.checkCollision(this.player.getRectangle(), this.enemy.getRectangle());
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
     return Game;
@@ -90,30 +123,41 @@ var Lasergun = (function (_super) {
     __extends(Lasergun, _super);
     function Lasergun(x, y, el) {
         var _this = _super.call(this, x, y, el) || this;
-        _this.yspeed = 0;
-        window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
+        _this.bullets = 0;
+        _this.speed = 20;
         return _this;
     }
-    Lasergun.prototype.update = function () {
-        this.setY(this.getY() + this.yspeed);
-        this.move();
-    };
-    Lasergun.prototype.onKeyDown = function (event) {
-        switch (event.keyCode) {
-            case 32:
-                this.yspeed = 10;
-                break;
+    Lasergun.prototype.shoot = function (x) {
+        if (this.bullets > 0) {
+            return;
         }
+        else {
+            this.bullets++;
+            this.setY(0);
+            this.setX(x + 10);
+            console.log("shooting methiod is activated");
+        }
+    };
+    Lasergun.prototype.removeBullet = function () {
+        if (this.bullets >= 1) {
+        }
+        this.bullets = 0;
+    };
+    Lasergun.prototype.update = function () {
+        this.setY(this.getY() - this.speed);
+        this.move();
+        console.log("update of shoot is working");
     };
     return Lasergun;
 }(GameObject));
 var Player = (function (_super) {
     __extends(Player, _super);
-    function Player(x, y, el, g) {
+    function Player(x, y, el, g, l) {
         var _this = _super.call(this, x, y, el) || this;
         _this.xspeed = 0;
         _this.yspeed = 0;
         _this.game = g;
+        _this.lasergun = l;
         _this.move();
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
         window.addEventListener("keyup", function (e) { return _this.onKeyUp(e); });
@@ -147,6 +191,10 @@ var Player = (function (_super) {
             case 40:
                 this.yspeed = 5;
                 break;
+            case 32:
+                console.log("Spacebar is clicked");
+                this.lasergun.shoot(this.getX());
+                break;
         }
     };
     Player.prototype.onKeyUp = function (event) {
@@ -166,5 +214,12 @@ var Player = (function (_super) {
         }
     };
     return Player;
+}(GameObject));
+var Weapon = (function (_super) {
+    __extends(Weapon, _super);
+    function Weapon() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return Weapon;
 }(GameObject));
 //# sourceMappingURL=main.js.map

@@ -3,15 +3,18 @@ class Game {
     // private textfield:HTMLElement
     private player:Player
     private enemy: Enemy
-    private lasergun:Lasergun
+    // private lasergun:Lasergun
+
+    //array met ameobjecten
+    public GameObjects:GameObject[] = []
 
 
     private constructor() {
         // this.textfield = document.getElementsByTagName("textfield")[0] as HTMLElement
         
-        this.player = new Player ( window.innerWidth/2, (window.innerHeight - 135), "player", this)
+        this.player = new Player ( window.innerWidth/2, (window.innerHeight - 135), "player", this, )
         this.enemy = new Enemy (0,0, "enemy", this)
-        this.lasergun = new Lasergun (0,0,"lasergun")
+        // this.lasergun = new Lasergun (0,0,"lasergun")
         this.gameLoop()
 
         
@@ -36,10 +39,13 @@ class Game {
     private gameLoop():void {
         this.player.update()
         this.enemy.update()
-        this.lasergun.update()
+        // this.lasergun.update()
 
         // Check collision between two spaceships
-        let hit = this.checkCollision(this.player.getRectangle(), this.enemy.getRectangle())
+        let collisionShips = this.checkCollision(this.player.getRectangle(), this.enemy.getRectangle())
+        //let hit = this.checkCollision(this.bullet.getRectangle(), this.enemy.getRectangle())
+        // console.log("spaceship hit is " + hit)
+
 
         requestAnimationFrame(() => this.gameLoop())
     }

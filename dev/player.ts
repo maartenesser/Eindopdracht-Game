@@ -1,15 +1,24 @@
 /// <reference path="./gameObject.ts" />
 /// <reference path="./game.ts" />
+/// <reference path="./Weapons/lasergun.ts" />
+
 
 class Player extends GameObject {
     
     private game:Game
+    private lasergun: Lasergun
+
     private xspeed:number = 0
     private yspeed:number = 0
 
-    constructor(  x:number, y:number, el:string, g:Game) { 
+
+    // private weapon:Weapon
+
+    constructor(  x:number, y:number, el:string, g:Game, l:Lasergun) { 
         super( x, y, el)
         this.game = g
+        this.lasergun = l
+        // this.lasergun = new Lasergun(this.getX(), this.getY(), "lasergun" );
 
         this.move()
 
@@ -50,8 +59,13 @@ class Player extends GameObject {
             case 40:
                 this.yspeed = 5
                 break
+            case 32:
+            // space moet ingeklickt worden om de laser af te vuren.
+                console.log("Spacebar is clicked")
+                this.lasergun.shoot(this.getX())
+                break
+                }
             }
-    }
 
     onKeyUp(event:KeyboardEvent):void {
         switch(event.keyCode){

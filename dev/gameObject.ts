@@ -1,8 +1,8 @@
 class GameObject {
 
-    private x:number
-    private y:number
-    private el:HTMLElement
+    public x:number
+    public y:number
+    public el:HTMLElement
 
     
     constructor( x:number, y:number, el:string) {
