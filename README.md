@@ -37,16 +37,16 @@ $ git clone https://github.com/maartenesser/Eindopdracht-Game
 
 ## Pull request
 
-## Week 4 pull Request door Lennart Bank bij Space Nebula (Maarten Esser)
+### Week 4 pull Request door Lennart Bank bij Space Nebula (Maarten Esser)
 
-### ReadMe:
+#### ReadMe:
 ``` Deze branch voegt functionaliteit toe om de player in het browser scherm te houden. ```
 
 Link: https://github.com/maartenesser/Eindopdracht-Game/commit/1a0e7d824a542f5aa78f7af79bffee864fe9d273
 
-## Week 4 Pull request door Maarten Esser bij Bubble Trouble (Lennart Bank); 
+### Week 4 Pull request door Maarten Esser bij Bubble Trouble (Lennart Bank); 
 
-### ReadMe:
+#### ReadMe:
 ```
 Added a singleton pattern for the game to make sure that there is only one instance of the game.
 Added a strategy pattern for weapons to make sure that the player could have more than one weapon arrow.
