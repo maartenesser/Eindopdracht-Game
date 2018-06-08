@@ -1,11 +1,11 @@
-
-class Lasergun extends GameObject implements WeaponBehaviour {
+class DoubleLasergun extends GameObject implements WeaponBehaviour {
 
     speed: number
     bullets:number
 
     constructor (x:number, y:number, el:string){
         super(x, y, el)
+
         
         this.bullets = 0
         this.speed = 20

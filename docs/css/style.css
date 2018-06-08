@@ -31,9 +31,24 @@ enemy {
     background-image: url(../images/enemy.png);
 }
 lasergun {
-    width: 124px; height: 192px;
-    background-image: url(../images/bullet.png);
-    position: absolute;
+    width: 9px; height: 57px;
+    background-image: url(../images/bullet2.png);
+    /* position: absolute; */
+    background-size: cover;
+    z-index: 1;
+}
+
+lasergun {
+    width: 9px; height: 57px;
+    background-image: url(../images/lasergun.png);
+    /* position: absolute; */
+    background-size: cover;
+    z-index: 1;
+}
+doublelasergun {
+    width: 30px; height: 57px;
+    background-image: url(../images/doubleLasergun.png);
+    /* position: absolute; */
     background-size: cover;
     z-index: 1;
 }

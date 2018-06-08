@@ -15,12 +15,11 @@ class CollisionDetection {
     }
 
     private shootCollision() {
-        // let bulletRect = this.player
     }
 
 
     private playerCollision() {
-        let pl
+        //let pl
     }
 
 }

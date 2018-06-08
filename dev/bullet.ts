@@ -18,18 +18,7 @@ class Bullet extends GameObject {
         this.y += this.speedy
 
         console.log("Update bullet is working")
-
-        // if (this.outsideWindow()) {
-        //     this.remove(this, this.bulletList)
-        // }
     }
 
-    // private outsideWindow() : boolean {
-    //     return(
-    //         this.x > window.innerWidth ||
-    //         this.x + this.width < 0 ||
-    //         this.y > window.innerHeight ||
-    //         this.y + this.height < 0);
-    // }
 
 }
