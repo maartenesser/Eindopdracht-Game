@@ -42,7 +42,7 @@ $ git clone https://github.com/maartenesser/Eindopdracht-Game
 #### ReadMe:
 ``` Deze branch voegt functionaliteit toe om de player in het browser scherm te houden. ```
 
-Link: https://github.com/maartenesser/Eindopdracht-Game/commit/1a0e7d824a542f5aa78f7af79bffee864fe9d273
+  Link: https://github.com/maartenesser/Eindopdracht-Game/commit/1a0e7d824a542f5aa78f7af79bffee864fe9d273
 
 ### Week 4 Pull request door Maarten Esser bij Bubble Trouble (Lennart Bank); 
 
@@ -55,16 +55,16 @@ Made some minor corrections in the style css.
 TODO: Minor changes to make strategy pattern complete. 
 ```
 
-Link: https://github.com/lennartbank/prt01-8-eindopdracht/pull/1
+  Link: https://github.com/lennartbank/prt01-8-eindopdracht/pull/1
 
 ## Peer Review
 
 
 ### Week 6 peer review van Lennart Bank voor Space Nebula (Maarten Esser)
 
-Link: https://github.com/maartenesser/Eindopdracht-Game/issues/3
+  Link: https://github.com/maartenesser/Eindopdracht-Game/issues/3
 
 ### Week 6 peer review van Maarten Esser voor Bubble Trouble (Lennart Bank)
 
-Link: https://github.com/lennartbank/prt01-8-eindopdracht/issues/2
+  Link: https://github.com/lennartbank/prt01-8-eindopdracht/issues/2
 
