@@ -57,3 +57,14 @@ TODO: Minor changes to make strategy pattern complete.
 
 Link: https://github.com/lennartbank/prt01-8-eindopdracht/pull/1
 
+## Peer Review
+
+
+### Week 6 peer review van Lennart Bank voor Space Nebula (Maarten Esser)
+
+Link: https://github.com/maartenesser/Eindopdracht-Game/issues/3
+
+### Week 6 peer review van Maarten Esser voor Bubble Trouble (Lennart Bank)
+
+Link: https://github.com/lennartbank/prt01-8-eindopdracht/issues/2
+
