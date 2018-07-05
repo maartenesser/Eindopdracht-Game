@@ -58,10 +58,17 @@ var EnemyMovement = (function () {
     EnemyMovement.prototype.removeForeground = function () {
         document.getElementsByTagName("foreground")[0].removeChild(this.el);
     };
+    EnemyMovement.prototype.getX = function () {
+        return this.x;
+    };
+    EnemyMovement.prototype.getY = function () {
+        return this.y;
+    };
     return EnemyMovement;
 }());
 var Game = (function () {
     function Game() {
+        this.paused = false;
         this.observers = [];
         this.enemys = [];
         this.GameObjects = [];
@@ -69,7 +76,7 @@ var Game = (function () {
         this.enemys.push(new Enemy(0, window.innerWidth));
         this.enemys.push(new Enemy(0, window.innerWidth));
         this.enemys.push(new Enemy(0, window.innerWidth));
-        this.observers.push(this.enemys);
+        this.subscribe(this.enemys);
         this.powerUp = new PowerUp(this.player);
         this.powerUp.makePowerUp(400, 700, "lasergun");
         this.powerUp.makePowerUp(200, 700, 'doublelasergun');
@@ -134,7 +141,6 @@ var Game = (function () {
                     console.log("Laser hits enemy");
                 }
                 else {
-                    console.log("do nothing");
                 }
             }
         }
@@ -205,7 +211,7 @@ var Player = (function (_super) {
         _this.xspeed = 0;
         _this.yspeed = 0;
         _this.game = g;
-        _this.setWeaponBehaviour(new DoubleLasergun(_this.getX(), _this.getY(), 'doublelasergun'));
+        _this.setWeaponBehaviour(new Lasergun(_this.getX(), _this.getY(), 'lasergun', 10));
         _this.drawForeground();
         _this.move();
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
@@ -274,11 +280,19 @@ var Enemy = (function (_super) {
     function Enemy(a, b) {
         var _this = _super.call(this, a, b) || this;
         _this.behaviour = new Floating(_this);
-        _this.powerUp = new PowerUp(_this.player);
+        _this.setWeaponBehaviour(new Lasergun(_this.getX(), _this.getY(), 'lasergun', -10));
+        setInterval(function () { return _this.shoot(); }, 2000);
         return _this;
     }
+    Enemy.prototype.setWeaponBehaviour = function (w) {
+        this.weaponBehaviour = w;
+    };
     Enemy.prototype.update = function () {
         this.behaviour.update();
+        this.weaponBehaviour.update();
+    };
+    Enemy.prototype.shoot = function () {
+        this.weaponBehaviour.shoot(this.getX(), this.getY());
     };
     Enemy.prototype.notify = function () {
         this.removeForeground();
@@ -337,7 +351,7 @@ var LasergunPack = (function (_super) {
         return _this;
     }
     LasergunPack.prototype.switchWeapon = function () {
-        this.player.setWeaponBehaviour(new Lasergun(0, 0, "lasergun"));
+        this.player.setWeaponBehaviour(new Lasergun(0, 0, "lasergun", 10));
     };
     return LasergunPack;
 }(GameObject));
@@ -373,7 +387,7 @@ var DoubleLasergun = (function (_super) {
         this.bullets++;
         this.setX(x + 58);
         this.setY(y);
-        this.drawForeground();
+        _super.prototype.drawForeground.call(this);
     };
     DoubleLasergun.prototype.removeBullet = function () {
         if (this.bullets >= 1) {
@@ -389,20 +403,21 @@ var DoubleLasergun = (function (_super) {
 }(GameObject));
 var Lasergun = (function (_super) {
     __extends(Lasergun, _super);
-    function Lasergun(x, y, el) {
+    function Lasergun(x, y, el, s) {
         var _this = _super.call(this, x, y, el) || this;
         _this.bullets = 0;
-        _this.speed = 10;
+        _this.speed = s;
         return _this;
     }
     Lasergun.prototype.shoot = function (x, y) {
         this.bullets++;
         this.setX(x + 58);
-        this.setY(y);
-        this.drawForeground();
+        this.setY(y - 100);
+        _super.prototype.drawForeground.call(this);
     };
     Lasergun.prototype.removeBullet = function () {
         if (this.bullets >= 1) {
+            _super.prototype.removeForeground.call(this);
         }
         this.bullets = 0;
     };

@@ -16,7 +16,7 @@ class DoubleLasergun extends GameObject implements WeaponBehaviour {
         this.bullets++
         this.setX(x+58)
         this.setY(y)
-        this.drawForeground()
+        super.drawForeground()
     }
 
     removeBullet(): void {

@@ -10,6 +10,6 @@ class LasergunPack extends GameObject {
     }
 
     public switchWeapon():void {
-        this.player.setWeaponBehaviour(new Lasergun(0,0,"lasergun"))
+        this.player.setWeaponBehaviour(new Lasergun(0,0,"lasergun", 10))
     }
 }

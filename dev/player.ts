@@ -12,7 +12,7 @@ class Player extends GameObject {
     constructor(  x:number, y:number, el:string, g:Game) { 
         super( x, y, el)
         this.game = g
-        this.setWeaponBehaviour (new DoubleLasergun(this.getX(), this.getY(), 'doublelasergun'))
+        this.setWeaponBehaviour (new Lasergun(this.getX(), this.getY(), 'lasergun', 10))
         this.drawForeground()
         this.move()
 

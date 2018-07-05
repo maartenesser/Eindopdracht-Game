@@ -58,15 +58,133 @@ window.addEventListener("load", () => {
 ```
 
 ## Polymorfisme
-Ik heb polymorphisme op de volgende twee plekken gebruikt. Als eerst heb ik polymorfisme toegepast in mijn GameObject. Dit is een class waar ik een blaudruk heb gemaakt wat de basis is van elke game component wat ik in de game laad. Zo kan ik verschillende componenten maken die de zelfde game Object class erven maar dan toch nog van elkaar verschillen. De gameobject class word door de volgende classes gebruikt: Player, Weapons.
+Ik heb polymorphisme op de volgende twee plekken gebruikt. Als eerst heb ik polymorfisme toegepast in mijn GameObject. Dit is een class waar ik een blaudruk heb gemaakt wat de basis is van elke game component wat ik in de game laad. Zo kan ik verschillende componenten maken die de zelfde game Object class erven maar dan toch nog van elkaar verschillen. De gameobject class word door de volgende classes gebruikt: Player, Lasergun, DoubleLasergun, doubleLasergunPack, lasergunPack.
 
+Bij de LasergunPack class maak ik gebruik van polymorfisme door de gameObject class te extenden.
+```
+class LasergunPack extends GameObject {
+}
+```
+
+Om de laserGunPack die van het gameObject erft te maken moet ik eerst de super method aan roepen in de constructor om de `x, y` en `el` in te vullen.
+
+```
+super(x, y, el)
+```
+om de laserGunPack in de game te laten zien gebruik ik deze method die ook van het GameObject afstamt.
+
+```
+super.drawForeground()
+```
+
+//een ander voorbeeld is de Enemy class. Die erft van enemymovement. 
 // Polymorfisme afmaken
 
-## Strategy
+## Strategy Pattern
+Hieronder beschrijf ik waar ik het strategy pattern heb toegevoegd. Elk wapen implementeerd de interface WeaponBehaviour.
+
+```
+    interface WeaponBehaviour {
+
+    speed: number
+    bullets:number
+    shoot(x:number, y:number): void
+    update():void
+    removeBullet():void
+    getRectangle():ClientRect
+
+}
+```
+De Player heeft twee wapens die deel uit maken van het strategy pattern (Weaponbehaviour). Het type waken wordt in de player class bepaald.
+
+```
+public myWeaponBehaviour: WeaponBehaviour
+        this.setWeaponBehaviour (new Lasergun(this.getX(), this.getY(), 'lasergun', 10))
+```
+Als het wapen aangepast moet worden kan dit gedaan worden door de setWeaponbehaviour method aan te roepen.
+
+Om van wapen te wisselen moet de player een updrade pack pakken. in deze upgrade packs wordt dan met de switchWeapon method de setWeaponbehaviour aangeroepen om vervolgens het wapen van de player te veranderen.
+
+```
+public switchWeapon():void {
+        this.player.setWeaponBehaviour(new DoubleLasergun(0,0,"doublelasergun"))
+    }
+```
+
+Verder maakt de Enemy ook gebruik van de setWeaponBehaviuor. Hier krijgt de enemy ook een laser. In het verloop van het spel is er dus een mogelijkheid om het wapen van de enemy te veranderen. Hierbij gebruik je precies de zelfde methode als hierboven. Alleen moet je wel opletten dat de laser de andere kant moet gaan schieten.
+
+Verder heb ik bij de enemy nog een strategy pattern gebruikt. Hiermee wil ik zijn vlieg gedrag beinvloeden. Het gedrag wordt in de condtructor aangeroepen.
+
+```
+        this.behaviour = new Floating (this)
+
+```
+
+Helaas had ik niet genoeg tijd om een ander vlieg gedrag toe te voegen voor de Enemy class.
+
+## Observer Pattern
+
+Het Observer pattern gebruik ik om de enemys te laten verdwijen als de enemy door een bullet van de player geraakt word. Hierbij is de game het Subject die de volgende interface implementeerd.
+
+  ```
+  interface Subject {
+
+      observers:Observer[]
+      subscribe(o:Observer):void
+      unsubscribe(o:Observer):void
+      
+  }
+  ```
+
+De twee methods die in de interface staan beschreven worden gebruikt om de obeservers (enemies) aan te melden en af te melden bij van de observer array (`observers:Observer[]`)
+
+voor het aanmelden wordt deze funktie gebruikt.
+
+  ```
+    subscribe(o: Observer): void {
+          
+          this.observers.push(o)
+
+      }
+  ```
+
+voor het afmelden wordt deze functie gebruikt.
+
+  ```
+  public unsubscribe(o:Observer):void {
+          for (let i = 0; i < this.observers.length; i ++) {
+              if(this.observers[i] == o) {
+                  this.observers.splice(i,1)
+              }
+          }
+      }
+
+  ```
+er is maar een class die de observer interface implementeerd en dat is de enemy class.
+
+```
+interface Observer {
+    notify():void
+
+}
+```
+
+Als de observers zijn aangemeld zal het subject (game) aangeven wanneer de observers een bericht krijgen. Dit gebreurd als volgd.
+
+```
+for (let i = 0, len = this.enemys.length; i < len; i++) {
+            
+                if(this.enemys[i]) {
+                    if(this.checkCollision(lasergunRect, this.enemys[i].getRectangle())) {
+                    this.enemys[i].notify()
+                    } 
+                }
+```
+de Notify word angeroepen en bij de observer (enemy class) uitgevoert. Wat er bij mij gebeurd is dat de notify functie de enemy verwijderd als de enemy geraakt wordt door een laser.
 
 
-
-
+## Gameplay Componenten
+//nog beschrijven
 ## Pull request
 
 ### Week 4 pull Request door Lennart Bank bij Space Nebula (Maarten Esser)

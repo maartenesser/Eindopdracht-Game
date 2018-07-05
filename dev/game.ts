@@ -8,8 +8,7 @@ class Game implements Subject {
     private doubleLasergun: DoubleLasergun
     private gameObject : GameObject
     public el:HTMLElement
-
-
+    public paused:Boolean = false
 
 
     public observers: Observer[] = []
@@ -31,20 +30,26 @@ class Game implements Subject {
         this.enemys.push (new Enemy(0, window.innerWidth))
         this.enemys.push ( new Enemy(0, window.innerWidth))
         this.enemys.push (new Enemy(0, window.innerWidth))
-        this.observers.push(this.enemys)
+        // this.observers.push(this.enemys)
+        // this.subscribe(Enemy)
+        this.subscribe(this.enemys)
        
         this.powerUp    = new PowerUp(this.player)
 
+        //making powerUps and loading them into the game map
         this.powerUp.makePowerUp(400,700 ,"lasergun")
         this.powerUp.makePowerUp(200, 700, 'doublelasergun')
 
 
         console.log(this.powerUp.powerUps)
         console.log(this.enemys)
+        
+        //Starting the gameloop
         this.gameLoop()
         
     }
 
+    //Singleton
     public static getInstance() {
         if(!Game.instance){
             Game.instance = new Game()
@@ -53,10 +58,13 @@ class Game implements Subject {
         return Game.instance
     }
 
+    //Subject function of the observer pattern
     public subscribe (o: Observer):void {
         this.observers.push(o)
     }
 
+
+    //Subject function of the observer pattern
     public unsubscribe(o:Observer):void {
         for (let i = 0; i < this.observers.length; i ++) {
             if(this.observers[i] == o) {
@@ -73,6 +81,7 @@ class Game implements Subject {
             b.top <= a.bottom)
     }
 
+    //Gameloop function
     private gameLoop():void {
         this.player.update()
         this.playerCollision()
@@ -115,24 +124,36 @@ class Game implements Subject {
         //Collision enemy with Laser
         private checkCollisionLaser():void {
         
+            
             let lasergunRect  = this.player.weaponBehaviour.getRectangle()
-    
+
             for (let i = 0, len = this.enemys.length; i < len; i++) {
             
                 if(this.enemys[i]) {
                     if(this.checkCollision(lasergunRect, this.enemys[i].getRectangle())) {
                     this.player.weaponBehaviour.removeBullet()
                     this.enemys[i].notify()
+                    //TODO: hier gaat iets fout denk ik
                     this.enemys.splice(i,1)
                     console.log("Laser hits enemy")
                     } else {
-                    console.log("do nothing")
+                    // console.log("do nothing")
                     }
                 }
             }
 
+            
+            //TODO: Enemy doesn't recognize the weponbehaviour class
+            // let enemylaser = this.enemy.weaponBehaviour.getRectangle()
+            // if(this.checkCollision(enemylaser, this.player.getRectangle())) {
+            //     this.enemy.weaponBehaviour.removeBullet()
+            //     console.log("bullet hits enemy")
+    // }
+       
+
         }
 
+        //Collision with the powerups and the player
         private powerUpCollision(): void {
             let powerUps = this.powerUp.powerUps
             let playerRect = this.player.getRectangle()
@@ -156,7 +177,7 @@ class Game implements Subject {
 
 
    
-
+//Singleton
 window.addEventListener("load", () => {
     Game.getInstance()
 })
