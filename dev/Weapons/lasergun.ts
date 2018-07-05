@@ -8,7 +8,7 @@ class Lasergun extends GameObject implements WeaponBehaviour {
         super(x, y, el)
         
         this.bullets = 0
-        this.speed = 20
+        this.speed = 10
 
     }
 

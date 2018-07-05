@@ -59,3 +59,17 @@ background {
     background-repeat: repeat-x;
     background-position: bottom;
 }
+lasergunPack {
+    width: 9px; height: 57px;
+    background-image: url(../images/lasergun.png);
+    /* position: absolute; */
+    background-size: cover;
+    z-index: 1;
+}
+doubleLasergunPack {
+    width: 30px; height: 57px;
+    background-image: url(../images/doubleLasergun.png);
+    /* position: absolute; */
+    background-size: cover;
+    z-index: 1;
+}

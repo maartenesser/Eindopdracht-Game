@@ -15,6 +15,10 @@ class GameObject {
         this.move()
     }
 
+    public update():void {
+        
+    }
+
     public getRectangle(){
         return this.el.getBoundingClientRect()
     }
@@ -47,6 +51,9 @@ class GameObject {
 
     setY(y:number):void {
         this.y = y
+    }
+    public getEL():HTMLElement {
+        return this.el
     }
 
 }

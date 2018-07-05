@@ -20,12 +20,16 @@ abstract class EnemyMovement {
 
         maxWidth -= this.htmlElement.clientWidth
         this.x = (Math.random() * (maxWidth - minWidth)) + minWidth
-        this.y = 100
+        this.y = (Math.random() * (this.maxHeight - this.minHeight)) + this.minHeight
 
         this.minWidth   = minWidth
         this.maxWidth   = maxWidth
-        this.maxHeight  = 300    - this.htmlElement.clientHeight
+        this.maxHeight  = 600    - this.htmlElement.clientHeight
         this.minHeight  = 0
+    }
+    
+    public getRectangle(){
+        return this.htmlElement.getBoundingClientRect()
     }
 
     abstract update() : void

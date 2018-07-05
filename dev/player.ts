@@ -2,7 +2,7 @@ class Player extends GameObject {
 
     
     private game:Game
-    private lasergun:Lasergun
+    private lasergun: Lasergun
 
     private xspeed:number = 0
     private yspeed:number = 0
@@ -12,14 +12,14 @@ class Player extends GameObject {
     constructor(  x:number, y:number, el:string, g:Game) { 
         super( x, y, el)
         this.game = g
-       
         this.setWeaponBehaviour (new DoubleLasergun(this.getX(), this.getY(), 'doublelasergun'))
-
         this.drawForeground()
         this.move()
 
         window.addEventListener("keydown", (e:KeyboardEvent) => this.onKeyDown(e))
         window.addEventListener("keyup", (e:KeyboardEvent) => this.onKeyUp(e))
+
+        this.game.GameObjects.push(this)
     }
 
     public setWeaponBehaviour(w:WeaponBehaviour) {
@@ -63,6 +63,7 @@ class Player extends GameObject {
                 break
             case 32:
                 this.weaponBehaviour.shoot(this.getX(), this.getY())
+                console.log("pressed space key!")
                 break
                 }
             }

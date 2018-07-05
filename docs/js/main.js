@@ -9,59 +9,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var GameObject = (function () {
-    function GameObject(x, y, el) {
-        this.x = x;
-        this.y = y;
-        this.el = document.createElement(el);
-        this.move();
-    }
-    GameObject.prototype.getRectangle = function () {
-        return this.el.getBoundingClientRect();
-    };
-    GameObject.prototype.move = function () {
-        this.el.style.transform = "translate(" + (this.x) + "px, " + this.y + "px)";
-    };
-    GameObject.prototype.drawForeground = function () {
-        var foreground = document.getElementsByTagName("foreground")[0];
-        foreground.appendChild(this.el);
-    };
-    GameObject.prototype.removeForeground = function () {
-        var foreground = document.getElementsByTagName("foreground")[0];
-        foreground.removeChild(this.el);
-    };
-    GameObject.prototype.getX = function () {
-        return this.x;
-    };
-    GameObject.prototype.getY = function () {
-        return this.y;
-    };
-    GameObject.prototype.setX = function (x) {
-        this.x = x;
-    };
-    GameObject.prototype.setY = function (y) {
-        this.y = y;
-    };
-    return GameObject;
-}());
-var Bullet = (function (_super) {
-    __extends(Bullet, _super);
-    function Bullet(x, y, el) {
-        var _this = _super.call(this, x, y, el) || this;
-        _this.speed = 10;
-        _this.speedx = 0;
-        _this.speedy = 0;
-        _this.speedx = _this.speed;
-        _this.speedy = _this.speed;
-        return _this;
-    }
-    Bullet.prototype.update = function () {
-        this.x += this.speedx;
-        this.y += this.speedy;
-        console.log("Update bullet is working");
-    };
-    return Bullet;
-}(GameObject));
 var CollisionDetection = (function () {
     function CollisionDetection(g, p) {
         this.player = p;
@@ -93,12 +40,15 @@ var EnemyMovement = (function () {
         content.appendChild(this.htmlElement);
         maxWidth -= this.htmlElement.clientWidth;
         this.x = (Math.random() * (maxWidth - minWidth)) + minWidth;
-        this.y = 100;
+        this.y = (Math.random() * (this.maxHeight - this.minHeight)) + this.minHeight;
         this.minWidth = minWidth;
         this.maxWidth = maxWidth;
-        this.maxHeight = 300 - this.htmlElement.clientHeight;
+        this.maxHeight = 600 - this.htmlElement.clientHeight;
         this.minHeight = 0;
     }
+    EnemyMovement.prototype.getRectangle = function () {
+        return this.htmlElement.getBoundingClientRect();
+    };
     EnemyMovement.prototype.draw = function () {
         this.htmlElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
     };
@@ -106,10 +56,18 @@ var EnemyMovement = (function () {
 }());
 var Game = (function () {
     function Game() {
+        this.observers = [];
         this.enemys = [];
         this.GameObjects = [];
         this.player = new Player(window.innerWidth / 2, (window.innerHeight - 135), "player", this);
-        this.enemys.push(new Enemy(0, window.innerWidth));
+        this.enemys.push(new Enemy(100, window.innerWidth));
+        this.enemys.push(new Enemy(50, window.innerWidth));
+        this.enemys.push(new Enemy(100, window.innerWidth));
+        this.powerUp = new PowerUp(this.player);
+        this.powerUp.makePowerUp(400, 700, "lasergun");
+        this.powerUp.makePowerUp(200, 700, 'doublelasergun');
+        console.log(this.powerUp.powerUps);
+        console.log(this.enemys);
         this.gameLoop();
     }
     Game.getInstance = function () {
@@ -117,6 +75,16 @@ var Game = (function () {
             Game.instance = new Game();
         }
         return Game.instance;
+    };
+    Game.prototype.subscribe = function (o) {
+        this.observers.push(o);
+    };
+    Game.prototype.unsubscribe = function (o) {
+        for (var i = 0; i < this.observers.length; i++) {
+            if (this.observers[i] == o) {
+                this.observers.splice(i, 1);
+            }
+        }
     };
     Game.prototype.checkCollision = function (a, b) {
         return (a.left <= b.right &&
@@ -127,17 +95,102 @@ var Game = (function () {
     Game.prototype.gameLoop = function () {
         var _this = this;
         this.player.update();
+        this.playerCollision();
+        this.checkCollisionLaser();
+        this.powerUpCollision();
         for (var _i = 0, _a = this.enemys; _i < _a.length; _i++) {
             var enemyMovement = _a[_i];
             enemyMovement.update();
         }
+        for (var i = 0, len = this.GameObjects.length; i < len; i++) {
+            this.GameObjects[i].update();
+        }
         requestAnimationFrame(function () { return _this.gameLoop(); });
+    };
+    Game.prototype.playerCollision = function () {
+        var playerRect = this.player.getRectangle();
+        for (var i = 0, len = this.enemys.length; i < len; i++) {
+            if (this.enemys[i]) {
+                if (this.checkCollision(playerRect, this.enemys[i].getRectangle())) {
+                    for (var i_1 = 0; i_1 < this.observers.length; i_1++) {
+                        this.observers[i_1].notify();
+                    }
+                    console.log("collision enemy and player");
+                }
+            }
+        }
+    };
+    Game.prototype.checkCollisionLaser = function () {
+        var lasergunRect = this.player.weaponBehaviour.getRectangle();
+        for (var i = 0, len = this.enemys.length; i < len; i++) {
+            if (this.enemys[i]) {
+                if (this.checkCollision(lasergunRect, this.enemys[i].getRectangle())) {
+                    this.player.weaponBehaviour.removeBullet();
+                    this.enemys.splice(i, 1);
+                    console.log("Laser hits enemy");
+                }
+            }
+        }
+    };
+    Game.prototype.powerUpCollision = function () {
+        var powerUps = this.powerUp.powerUps;
+        var playerRect = this.player.getRectangle();
+        for (var i = 0, len = powerUps.length; i < len; i++) {
+            var powerRect = powerUps[i].getRectangle();
+            if (this.checkCollision(powerRect, playerRect)) {
+                powerUps[i].removeForeground();
+                this.player.weaponBehaviour.removeBullet();
+                console.log(powerUps);
+                console.log("laserpack collision with player");
+                powerUps[i].switchWeapon();
+            }
+        }
     };
     return Game;
 }());
 window.addEventListener("load", function () {
     Game.getInstance();
 });
+var GameObject = (function () {
+    function GameObject(x, y, el) {
+        this.x = x;
+        this.y = y;
+        this.el = document.createElement(el);
+        this.move();
+    }
+    GameObject.prototype.update = function () {
+    };
+    GameObject.prototype.getRectangle = function () {
+        return this.el.getBoundingClientRect();
+    };
+    GameObject.prototype.move = function () {
+        this.el.style.transform = "translate(" + (this.x) + "px, " + this.y + "px)";
+    };
+    GameObject.prototype.drawForeground = function () {
+        var foreground = document.getElementsByTagName("foreground")[0];
+        foreground.appendChild(this.el);
+    };
+    GameObject.prototype.removeForeground = function () {
+        var foreground = document.getElementsByTagName("foreground")[0];
+        foreground.removeChild(this.el);
+    };
+    GameObject.prototype.getX = function () {
+        return this.x;
+    };
+    GameObject.prototype.getY = function () {
+        return this.y;
+    };
+    GameObject.prototype.setX = function (x) {
+        this.x = x;
+    };
+    GameObject.prototype.setY = function (y) {
+        this.y = y;
+    };
+    GameObject.prototype.getEL = function () {
+        return this.el;
+    };
+    return GameObject;
+}());
 var Player = (function (_super) {
     __extends(Player, _super);
     function Player(x, y, el, g) {
@@ -150,6 +203,7 @@ var Player = (function (_super) {
         _this.move();
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
         window.addEventListener("keyup", function (e) { return _this.onKeyUp(e); });
+        _this.game.GameObjects.push(_this);
         return _this;
     }
     Player.prototype.setWeaponBehaviour = function (w) {
@@ -186,6 +240,7 @@ var Player = (function (_super) {
                 break;
             case 32:
                 this.weaponBehaviour.shoot(this.getX(), this.getY());
+                console.log("pressed space key!");
                 break;
         }
     };
@@ -246,6 +301,54 @@ var Floating = (function () {
     };
     return Floating;
 }());
+var DoubleLasergunPack = (function (_super) {
+    __extends(DoubleLasergunPack, _super);
+    function DoubleLasergunPack(x, y, el, p) {
+        var _this = _super.call(this, x, y, el) || this;
+        _this.player = p;
+        _super.prototype.move.call(_this);
+        _super.prototype.drawForeground.call(_this);
+        return _this;
+    }
+    DoubleLasergunPack.prototype.switchWeapon = function () {
+        this.player.setWeaponBehaviour(new DoubleLasergun(0, 0, "doublelasergun"));
+    };
+    return DoubleLasergunPack;
+}(GameObject));
+var LasergunPack = (function (_super) {
+    __extends(LasergunPack, _super);
+    function LasergunPack(x, y, el, p) {
+        var _this = _super.call(this, x, y, el) || this;
+        _this.player = p;
+        _super.prototype.move.call(_this);
+        _super.prototype.drawForeground.call(_this);
+        return _this;
+    }
+    LasergunPack.prototype.switchWeapon = function () {
+        this.player.setWeaponBehaviour(new Lasergun(0, 0, "lasergun"));
+    };
+    return LasergunPack;
+}(GameObject));
+var PowerUp = (function () {
+    function PowerUp(p) {
+        this.powerUps = [];
+        this.player = p;
+    }
+    PowerUp.prototype.makePowerUp = function (x, y, type) {
+        var powerUpHeight = 150;
+        switch (type) {
+            case 'lasergun':
+                var lasergunPack = new LasergunPack(x, y, "lasergunPack", this.player);
+                this.powerUps.push(lasergunPack);
+                break;
+            case 'doublelasergun':
+                var doubleLasergunPack = new DoubleLasergunPack(x, (window.innerHeight - powerUpHeight), "doubleLasergunPack", this.player);
+                this.powerUps.push(doubleLasergunPack);
+                break;
+        }
+    };
+    return PowerUp;
+}());
 var DoubleLasergun = (function (_super) {
     __extends(DoubleLasergun, _super);
     function DoubleLasergun(x, y, el) {
@@ -262,6 +365,7 @@ var DoubleLasergun = (function (_super) {
     };
     DoubleLasergun.prototype.removeBullet = function () {
         if (this.bullets >= 1) {
+            _super.prototype.removeForeground.call(this);
         }
         this.bullets = 0;
     };
@@ -276,7 +380,7 @@ var Lasergun = (function (_super) {
     function Lasergun(x, y, el) {
         var _this = _super.call(this, x, y, el) || this;
         _this.bullets = 0;
-        _this.speed = 20;
+        _this.speed = 10;
         return _this;
     }
     Lasergun.prototype.shoot = function (x, y) {

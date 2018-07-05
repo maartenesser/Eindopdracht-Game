@@ -5,10 +5,10 @@ class DoubleLasergun extends GameObject implements WeaponBehaviour {
 
     constructor (x:number, y:number, el:string){
         super(x, y, el)
-
         
         this.bullets = 0
         this.speed = 20
+        
 
     }
 
@@ -21,7 +21,7 @@ class DoubleLasergun extends GameObject implements WeaponBehaviour {
 
     removeBullet(): void {
         if (this.bullets >= 1) {
-            // Moet nog code komen
+           super.removeForeground()
         }
 
         this.bullets = 0

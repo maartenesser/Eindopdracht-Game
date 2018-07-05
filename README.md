@@ -35,6 +35,38 @@ $ git clone https://github.com/maartenesser/Eindopdracht-Game
 ## Game moet live staan op een webpage staan (Niet vergeten)
 - Eigen server of kijken of het op een game platform geupload kan worden.
 
+## Singleton
+Space Nebula maakt gebruik van een singleton. Deze wordt aangeroepen in de game class. Hij wordt als volgt opgeslagen als een static field.
+```
+private static instance:Game
+``` 
+De Game kan worden opgehaald of aangemaakt door de method _getInstance_ 
+```
+public static getInstance() {
+        if(!Game.instance){
+            Game.instance = new Game()
+        }
+
+        return Game.instance
+    }
+```
+Waar ik gebruik van maakt in de volgende eventListener in Game.ts:
+```
+window.addEventListener("load", () => {
+    Game.getInstance()
+})
+```
+
+## Polymorfisme
+Ik heb polymorphisme op de volgende twee plekken gebruikt. Als eerst heb ik polymorfisme toegepast in mijn GameObject. Dit is een class waar ik een blaudruk heb gemaakt wat de basis is van elke game component wat ik in de game laad. Zo kan ik verschillende componenten maken die de zelfde game Object class erven maar dan toch nog van elkaar verschillen. De gameobject class word door de volgende classes gebruikt: Player, Weapons.
+
+// Polymorfisme afmaken
+
+## Strategy
+
+
+
+
 ## Pull request
 
 ### Week 4 pull Request door Lennart Bank bij Space Nebula (Maarten Esser)
@@ -44,7 +76,7 @@ $ git clone https://github.com/maartenesser/Eindopdracht-Game
 
   Link: https://github.com/maartenesser/Eindopdracht-Game/commit/1a0e7d824a542f5aa78f7af79bffee864fe9d273
 
-### Week 4 Pull request door Maarten Esser bij Bubble Trouble (Lennart Bank); 
+### Week 4 Pull request door Maarten Esser van Bubble Trouble (Lennart Bank); 
 
 #### ReadMe:
 ```
