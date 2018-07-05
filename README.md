@@ -33,7 +33,7 @@ $ git clone https://github.com/maartenesser/Eindopdracht-Game
 ## UML | Klassendiagram (niet vergeten)
 
 ## Game moet live staan op een webpage staan (Niet vergeten)
-- Eigen server of kijken of het op een game platform geupload kan worden.
+Link naar de live game: https://spacenebula.maartensolutions.nl
 
 ## Singleton
 Space Nebula maakt gebruik van een singleton. Deze wordt aangeroepen in de game class. Hij wordt als volgt opgeslagen als een static field.
