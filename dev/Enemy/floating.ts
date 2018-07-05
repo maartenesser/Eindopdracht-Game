@@ -31,6 +31,6 @@ class Floating implements Movement {
         this.enemyMovement.x += this.enemyMovement.speedX
         this.enemyMovement.y += this.enemyMovement.speedY
         
-        this.enemyMovement.draw()
+        this.enemyMovement.move()
     }
 }

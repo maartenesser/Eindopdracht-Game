@@ -7,11 +7,16 @@ class Game implements Subject {
     private laserPack: LasergunPack
     private doubleLasergun: DoubleLasergun
     private gameObject : GameObject
+    public el:HTMLElement
+
+
+
 
     public observers: Observer[] = []
     // private enemy:Enemy
 
      private enemys: Enemy[] = []
+
 
     //array met gameobjecten
     public GameObjects:GameObject[] = []
@@ -21,10 +26,13 @@ class Game implements Subject {
         // this.textfield = document.getElementsByTagName("textfield")[0] as HTMLElement
         
         this.player = new Player ( window.innerWidth/2, (window.innerHeight - 135), "player", this)
-        this.enemys.push (new Enemy(100, window.innerWidth))
-        this.enemys.push (new Enemy(50, window.innerWidth))
-        this.enemys.push (new Enemy(100, window.innerWidth))
-        // this.laserPack = new LasergunPack (400,700, "lasergunPack", this.player)
+        
+       
+        this.enemys.push (new Enemy(0, window.innerWidth))
+        this.enemys.push ( new Enemy(0, window.innerWidth))
+        this.enemys.push (new Enemy(0, window.innerWidth))
+        this.observers.push(this.enemys)
+       
         this.powerUp    = new PowerUp(this.player)
 
         this.powerUp.makePowerUp(400,700 ,"lasergun")
@@ -33,8 +41,6 @@ class Game implements Subject {
 
         console.log(this.powerUp.powerUps)
         console.log(this.enemys)
-
-
         this.gameLoop()
         
     }
@@ -51,7 +57,7 @@ class Game implements Subject {
         this.observers.push(o)
     }
 
-    unsubscribe(o:Observer):void {
+    public unsubscribe(o:Observer):void {
         for (let i = 0; i < this.observers.length; i ++) {
             if(this.observers[i] == o) {
                 this.observers.splice(i,1)
@@ -72,12 +78,11 @@ class Game implements Subject {
         this.playerCollision()
         this.checkCollisionLaser()
         this.powerUpCollision()
-
-        // console.log(this.GameObjects)
-      
+        // console.log(this.observers)
+       
         //update every enemy in enemys array
-        for (const enemyMovement of this.enemys) {
-            enemyMovement.update()
+        for (let i=0, len = this.enemys.length; i < len; i++){
+            this.enemys[i].update()
         }
 
         //updating every gameobject in gameobjects array
@@ -89,7 +94,7 @@ class Game implements Subject {
     }
 
 
-    // Put into collision manager
+    // Player collision with Enemy
     private playerCollision():void {
         
         let playerRect  = this.player.getRectangle()
@@ -99,9 +104,6 @@ class Game implements Subject {
             if(this.enemys[i]) {
         
                 if(this.checkCollision(playerRect, this.enemys[i].getRectangle())) {
-                    for (let i = 0; i < this.observers.length; i++) {
-                        this.observers[i].notify()
-                    }
                     console.log("collision enemy and player")
                     }
                 }
@@ -109,6 +111,8 @@ class Game implements Subject {
             }
         }
 
+        //TODO: Hier gaat iets fout met de enemies.
+        //Collision enemy with Laser
         private checkCollisionLaser():void {
         
             let lasergunRect  = this.player.weaponBehaviour.getRectangle()
@@ -117,9 +121,12 @@ class Game implements Subject {
             
                 if(this.enemys[i]) {
                     if(this.checkCollision(lasergunRect, this.enemys[i].getRectangle())) {
-                       this.player.weaponBehaviour.removeBullet()
-                       this.enemys.splice(i,1)
-                        console.log("Laser hits enemy")
+                    this.player.weaponBehaviour.removeBullet()
+                    this.enemys[i].notify()
+                    this.enemys.splice(i,1)
+                    console.log("Laser hits enemy")
+                    } else {
+                    console.log("do nothing")
                     }
                 }
             }

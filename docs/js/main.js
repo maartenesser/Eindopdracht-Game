@@ -29,28 +29,34 @@ var EnemyMovement = (function () {
         if (type === void 0) { type = "enemy"; }
         this.x = 0;
         this.y = 0;
-        this.speedX = 5;
-        this.speedY = 2;
+        this.speedX = Math.random() * 8;
+        this.speedY = Math.random() * 8;
         this.minWidth = 0;
         this.maxWidth = 0;
         this.maxHeight = 0;
         this.minHeight = 0;
-        var content = document.getElementsByTagName("content")[0];
-        this.htmlElement = document.createElement(type);
-        content.appendChild(this.htmlElement);
-        maxWidth -= this.htmlElement.clientWidth;
+        var content = document.getElementsByTagName("foreground")[0];
+        this.el = document.createElement(type);
+        content.appendChild(this.el);
+        maxWidth -= this.el.clientWidth;
         this.x = (Math.random() * (maxWidth - minWidth)) + minWidth;
         this.y = (Math.random() * (this.maxHeight - this.minHeight)) + this.minHeight;
         this.minWidth = minWidth;
         this.maxWidth = maxWidth;
-        this.maxHeight = 600 - this.htmlElement.clientHeight;
+        this.maxHeight = 600 - this.el.clientHeight;
         this.minHeight = 0;
     }
     EnemyMovement.prototype.getRectangle = function () {
-        return this.htmlElement.getBoundingClientRect();
+        return this.el.getBoundingClientRect();
     };
-    EnemyMovement.prototype.draw = function () {
-        this.htmlElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+    EnemyMovement.prototype.move = function () {
+        this.el.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+    };
+    EnemyMovement.prototype.drawForeground = function () {
+        document.getElementsByTagName("foreground")[0].appendChild(this.el);
+    };
+    EnemyMovement.prototype.removeForeground = function () {
+        document.getElementsByTagName("foreground")[0].removeChild(this.el);
     };
     return EnemyMovement;
 }());
@@ -60,9 +66,10 @@ var Game = (function () {
         this.enemys = [];
         this.GameObjects = [];
         this.player = new Player(window.innerWidth / 2, (window.innerHeight - 135), "player", this);
-        this.enemys.push(new Enemy(100, window.innerWidth));
-        this.enemys.push(new Enemy(50, window.innerWidth));
-        this.enemys.push(new Enemy(100, window.innerWidth));
+        this.enemys.push(new Enemy(0, window.innerWidth));
+        this.enemys.push(new Enemy(0, window.innerWidth));
+        this.enemys.push(new Enemy(0, window.innerWidth));
+        this.observers.push(this.enemys);
         this.powerUp = new PowerUp(this.player);
         this.powerUp.makePowerUp(400, 700, "lasergun");
         this.powerUp.makePowerUp(200, 700, 'doublelasergun');
@@ -98,9 +105,8 @@ var Game = (function () {
         this.playerCollision();
         this.checkCollisionLaser();
         this.powerUpCollision();
-        for (var _i = 0, _a = this.enemys; _i < _a.length; _i++) {
-            var enemyMovement = _a[_i];
-            enemyMovement.update();
+        for (var i = 0, len = this.enemys.length; i < len; i++) {
+            this.enemys[i].update();
         }
         for (var i = 0, len = this.GameObjects.length; i < len; i++) {
             this.GameObjects[i].update();
@@ -112,9 +118,6 @@ var Game = (function () {
         for (var i = 0, len = this.enemys.length; i < len; i++) {
             if (this.enemys[i]) {
                 if (this.checkCollision(playerRect, this.enemys[i].getRectangle())) {
-                    for (var i_1 = 0; i_1 < this.observers.length; i_1++) {
-                        this.observers[i_1].notify();
-                    }
                     console.log("collision enemy and player");
                 }
             }
@@ -126,8 +129,12 @@ var Game = (function () {
             if (this.enemys[i]) {
                 if (this.checkCollision(lasergunRect, this.enemys[i].getRectangle())) {
                     this.player.weaponBehaviour.removeBullet();
+                    this.enemys[i].notify();
                     this.enemys.splice(i, 1);
                     console.log("Laser hits enemy");
+                }
+                else {
+                    console.log("do nothing");
                 }
             }
         }
@@ -267,10 +274,15 @@ var Enemy = (function (_super) {
     function Enemy(a, b) {
         var _this = _super.call(this, a, b) || this;
         _this.behaviour = new Floating(_this);
+        _this.powerUp = new PowerUp(_this.player);
         return _this;
     }
     Enemy.prototype.update = function () {
         this.behaviour.update();
+    };
+    Enemy.prototype.notify = function () {
+        this.removeForeground();
+        console.log("enemy is removed");
     };
     return Enemy;
 }(EnemyMovement));
@@ -297,7 +309,7 @@ var Floating = (function () {
         }
         this.enemyMovement.x += this.enemyMovement.speedX;
         this.enemyMovement.y += this.enemyMovement.speedY;
-        this.enemyMovement.draw();
+        this.enemyMovement.move();
     };
     return Floating;
 }());
