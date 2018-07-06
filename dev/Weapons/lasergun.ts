@@ -3,6 +3,7 @@ class Lasergun extends GameObject implements WeaponBehaviour {
 
     speed: number
     bullets:number
+    
 
     constructor (x:number, y:number, el:string, s:number){
         super(x, y, el)
@@ -15,7 +16,7 @@ class Lasergun extends GameObject implements WeaponBehaviour {
     shoot (x:number, y:number):void {
         this.bullets++
         this.setX(x+58)
-        this.setY(y-100)
+        this.setY(y)
         super.drawForeground()
     }
 

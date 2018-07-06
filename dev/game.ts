@@ -30,15 +30,16 @@ class Game implements Subject {
         this.enemys.push (new Enemy(0, window.innerWidth))
         this.enemys.push ( new Enemy(0, window.innerWidth))
         this.enemys.push (new Enemy(0, window.innerWidth))
-        // this.observers.push(this.enemys)
-        // this.subscribe(Enemy)
-        this.subscribe(this.enemys)
+      
+        for (let i = 0; i < this.enemys.length; i ++) {
+            this.subscribe(this.enemys[i])
+        }
        
         this.powerUp    = new PowerUp(this.player)
 
         //making powerUps and loading them into the game map
-        this.powerUp.makePowerUp(400,700 ,"lasergun")
-        this.powerUp.makePowerUp(200, 700, 'doublelasergun')
+        // this.powerUp.makePowerUp(400,700 ,"lasergun")
+        // this.powerUp.makePowerUp(200, 700, 'doublelasergun')
 
 
         console.log(this.powerUp.powerUps)
@@ -124,9 +125,9 @@ class Game implements Subject {
         //Collision enemy with Laser
         private checkCollisionLaser():void {
         
-            
+            if(this.player.weaponBehaviour){
             let lasergunRect  = this.player.weaponBehaviour.getRectangle()
-
+            
             for (let i = 0, len = this.enemys.length; i < len; i++) {
             
                 if(this.enemys[i]) {
@@ -141,15 +142,14 @@ class Game implements Subject {
                     }
                 }
             }
+        }
 
-            
             //TODO: Enemy doesn't recognize the weponbehaviour class
             // let enemylaser = this.enemy.weaponBehaviour.getRectangle()
             // if(this.checkCollision(enemylaser, this.player.getRectangle())) {
             //     this.enemy.weaponBehaviour.removeBullet()
             //     console.log("bullet hits enemy")
-    // }
-       
+            // }
 
         }
 

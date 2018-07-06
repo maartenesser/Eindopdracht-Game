@@ -6,6 +6,8 @@ class Enemy extends EnemyMovement implements Observer{
 
     public weaponBehaviour: WeaponBehaviour
 
+    private lasers: WeaponBehaviour[] = []
+
 
     constructor(a:number, b:number){
         super( a, b)
@@ -14,9 +16,6 @@ class Enemy extends EnemyMovement implements Observer{
         // this.shoot()
         // this.powerUp    = new PowerUp(this.player)
         setInterval(() => this.shoot(), 2000);
-
-
-
     }
     public setWeaponBehaviour(w:WeaponBehaviour) {
         this.weaponBehaviour = w
@@ -34,7 +33,7 @@ class Enemy extends EnemyMovement implements Observer{
     //Notify function that is implemented by the observer class
     public notify() : void {
         this.removeForeground()
-        
+        delete(this.weaponBehaviour)
         // this.powerUp.makePowerUp(200, 700, 'doublelasergun')
         console.log("enemy is removed")
     }

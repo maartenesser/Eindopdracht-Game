@@ -76,10 +76,10 @@ var Game = (function () {
         this.enemys.push(new Enemy(0, window.innerWidth));
         this.enemys.push(new Enemy(0, window.innerWidth));
         this.enemys.push(new Enemy(0, window.innerWidth));
-        this.subscribe(this.enemys);
+        for (var i = 0; i < this.enemys.length; i++) {
+            this.subscribe(this.enemys[i]);
+        }
         this.powerUp = new PowerUp(this.player);
-        this.powerUp.makePowerUp(400, 700, "lasergun");
-        this.powerUp.makePowerUp(200, 700, 'doublelasergun');
         console.log(this.powerUp.powerUps);
         console.log(this.enemys);
         this.gameLoop();
@@ -131,16 +131,18 @@ var Game = (function () {
         }
     };
     Game.prototype.checkCollisionLaser = function () {
-        var lasergunRect = this.player.weaponBehaviour.getRectangle();
-        for (var i = 0, len = this.enemys.length; i < len; i++) {
-            if (this.enemys[i]) {
-                if (this.checkCollision(lasergunRect, this.enemys[i].getRectangle())) {
-                    this.player.weaponBehaviour.removeBullet();
-                    this.enemys[i].notify();
-                    this.enemys.splice(i, 1);
-                    console.log("Laser hits enemy");
-                }
-                else {
+        if (this.player.weaponBehaviour) {
+            var lasergunRect = this.player.weaponBehaviour.getRectangle();
+            for (var i = 0, len = this.enemys.length; i < len; i++) {
+                if (this.enemys[i]) {
+                    if (this.checkCollision(lasergunRect, this.enemys[i].getRectangle())) {
+                        this.player.weaponBehaviour.removeBullet();
+                        this.enemys[i].notify();
+                        this.enemys.splice(i, 1);
+                        console.log("Laser hits enemy");
+                    }
+                    else {
+                    }
                 }
             }
         }
@@ -211,7 +213,6 @@ var Player = (function (_super) {
         _this.xspeed = 0;
         _this.yspeed = 0;
         _this.game = g;
-        _this.setWeaponBehaviour(new Lasergun(_this.getX(), _this.getY(), 'lasergun', 10));
         _this.drawForeground();
         _this.move();
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
@@ -223,7 +224,9 @@ var Player = (function (_super) {
         this.weaponBehaviour = w;
     };
     Player.prototype.update = function () {
-        this.weaponBehaviour.update();
+        if (this.weaponBehaviour) {
+            this.weaponBehaviour.update();
+        }
         this.setX(this.getX() + this.xspeed);
         this.setY(this.getY() + this.yspeed);
         if (this.getX() >= window.innerWidth - this.el.clientWidth ||
@@ -252,6 +255,7 @@ var Player = (function (_super) {
                 this.yspeed = 5;
                 break;
             case 32:
+                this.setWeaponBehaviour(new Lasergun(this.getX(), this.getY(), 'lasergun', 10));
                 this.weaponBehaviour.shoot(this.getX(), this.getY());
                 console.log("pressed space key!");
                 break;
@@ -279,6 +283,7 @@ var Enemy = (function (_super) {
     __extends(Enemy, _super);
     function Enemy(a, b) {
         var _this = _super.call(this, a, b) || this;
+        _this.lasers = [];
         _this.behaviour = new Floating(_this);
         _this.setWeaponBehaviour(new Lasergun(_this.getX(), _this.getY(), 'lasergun', -10));
         setInterval(function () { return _this.shoot(); }, 2000);
@@ -296,6 +301,7 @@ var Enemy = (function (_super) {
     };
     Enemy.prototype.notify = function () {
         this.removeForeground();
+        delete (this.weaponBehaviour);
         console.log("enemy is removed");
     };
     return Enemy;
@@ -412,7 +418,7 @@ var Lasergun = (function (_super) {
     Lasergun.prototype.shoot = function (x, y) {
         this.bullets++;
         this.setX(x + 58);
-        this.setY(y - 100);
+        this.setY(y);
         _super.prototype.drawForeground.call(this);
     };
     Lasergun.prototype.removeBullet = function () {
