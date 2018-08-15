@@ -1,15 +1,15 @@
 class LasergunPack extends GameObject {
-    player:Player
+    player: Player
 
-    constructor (x:number, y:number, el:string, p: Player) {
-        super(x,y,el)
+    constructor(x: number, y: number, el: string, p: Player) {
+        super(x, y, el)
         this.player = p
 
         super.move()
         super.drawForeground()
     }
 
-    public switchWeapon():void {
-        this.player.setWeaponBehaviour(new Lasergun(0,0,"lasergun", 10))
+    public switchWeapon(): void {
+        this.player.setWeaponBehaviour(new Lasergun(0, 0, "lasergun", 10))
     }
 }

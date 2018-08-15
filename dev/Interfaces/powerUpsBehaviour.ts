@@ -1,11 +1,11 @@
 
 interface PowerUpBehavior {
 
-    player:Player
+    player: Player
 
-    switchWeapon():void
-    update():void
-    getRectangle():ClientRect
-    removeForeground():void
+    switchWeapon(): void
+    update(): void
+    getRectangle(): ClientRect
+    removeForeground(): void
 
 }

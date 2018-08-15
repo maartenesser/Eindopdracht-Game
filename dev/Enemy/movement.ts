@@ -1,3 +1,3 @@
 interface Movement {
-    update():void
+    update(): void
 }

@@ -1,12 +1,12 @@
 class GameObject {
 
-    public x:number
-    public y:number
-    public el:HTMLElement
-    
+    public x: number
+    public y: number
+    public el: HTMLElement
 
-    
-    constructor( x:number, y:number, el:string) {
+
+
+    constructor(x: number, y: number, el: string) {
 
         this.x = x
         this.y = y
@@ -15,15 +15,15 @@ class GameObject {
         this.move()
     }
 
-    public update():void {
-        
+    public update(): void {
+
     }
 
-    public getRectangle(){
+    public getRectangle() {
         return this.el.getBoundingClientRect()
     }
 
-    move():void {
+    move(): void {
         this.el.style.transform = `translate(${(this.x)}px, ${this.y}px)`
     }
 
@@ -37,22 +37,22 @@ class GameObject {
         foreground.removeChild(this.el)
     }
 
-    getX():number {
+    getX(): number {
         return this.x
     }
 
-    getY():number {
+    getY(): number {
         return this.y
     }
 
-    setX(x:number):void {
+    setX(x: number): void {
         this.x = x
     }
 
-    setY(y:number):void {
+    setY(y: number): void {
         this.y = y
     }
-    public getEL():HTMLElement {
+    public getEL(): HTMLElement {
         return this.el
     }
 

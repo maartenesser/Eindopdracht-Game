@@ -12,21 +12,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var CollisionDetection = (function () {
-    function CollisionDetection(g, p) {
-        this.player = p;
-        this.game = g;
-    }
-    CollisionDetection.prototype.update = function () {
-        this.shootCollision();
-        this.playerCollision();
-    };
-    CollisionDetection.prototype.shootCollision = function () {
-    };
-    CollisionDetection.prototype.playerCollision = function () {
-    };
-    return CollisionDetection;
-}());
 var EnemyMovement = (function () {
     function EnemyMovement(minWidth, maxWidth, type) {
         if (type === void 0) { type = "enemy"; }
@@ -144,9 +129,6 @@ var Game = (function () {
                         this.player.weaponBehaviour.removeBullet();
                         this.enemys[i].notify();
                         this.enemys.splice(i, 1);
-                        console.log("Laser hits enemy");
-                    }
-                    else {
                     }
                 }
             }
@@ -161,7 +143,6 @@ var Game = (function () {
                 powerUps[i].removeForeground();
                 this.player.weaponBehaviour.removeBullet();
                 console.log(powerUps);
-                console.log("laserpack collision with player");
                 powerUps[i].switchWeapon();
             }
         }
@@ -262,7 +243,6 @@ var Player = (function (_super) {
                 break;
             case 32:
                 this.weaponBehaviour.shoot(this.getX(), this.getY());
-                console.log("pressed space key!");
                 break;
         }
     };
@@ -288,7 +268,6 @@ var Enemy = (function (_super) {
     __extends(Enemy, _super);
     function Enemy(a, b) {
         var _this = _super.call(this, a, b) || this;
-        _this.lasers = [];
         _this.behaviour = new Floating(_this);
         _this.setWeaponBehaviour(new Lasergun(_this.getX(), _this.getY(), 'lasergun', -10));
         setInterval(function () { return _this.shoot(); }, 2000);
