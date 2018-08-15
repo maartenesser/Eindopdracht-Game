@@ -1,5 +1,5 @@
 class LasergunPack extends GameObject {
-    player: Player
+    private player: Player
 
     constructor(x: number, y: number, el: string, p: Player) {
         super(x, y, el)

@@ -2,11 +2,11 @@ class Game implements Subject {
     private static instance: Game
     private player: Player
     private powerUp: PowerUp
-    public el: HTMLElement
-    public paused: Boolean = false
-    public observers: Observer[] = []
     private enemys: Enemy[] = []
-    public GameObjects: GameObject[] = []
+    public  el: HTMLElement
+    public  paused: Boolean = false
+    public  observers: Observer[] = []
+    public  GameObjects: GameObject[] = []
 
     private constructor() {
         this.player = new Player(window.innerWidth / 2, (window.innerHeight - 135), "player", this)

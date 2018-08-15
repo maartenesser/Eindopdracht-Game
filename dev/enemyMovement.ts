@@ -32,8 +32,6 @@ abstract class EnemyMovement {
         return this.el.getBoundingClientRect()
     }
 
-    // public update(): void
-
     public move() {
         this.el.style.transform = `translate(${this.x}px, ${this.y}px)`
     }
