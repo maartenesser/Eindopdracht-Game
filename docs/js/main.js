@@ -1,8 +1,11 @@
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -80,6 +83,8 @@ var Game = (function () {
             this.subscribe(this.enemys[i]);
         }
         this.powerUp = new PowerUp(this.player);
+        this.powerUp.makePowerUp(400, 700, "lasergun");
+        this.powerUp.makePowerUp(200, 700, 'doublelasergun');
         console.log(this.powerUp.powerUps);
         console.log(this.enemys);
         this.gameLoop();
@@ -213,6 +218,7 @@ var Player = (function (_super) {
         _this.xspeed = 0;
         _this.yspeed = 0;
         _this.game = g;
+        _this.setWeaponBehaviour(new Lasergun(_this.getX(), _this.getY(), 'lasergun', 10));
         _this.drawForeground();
         _this.move();
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
@@ -255,7 +261,6 @@ var Player = (function (_super) {
                 this.yspeed = 5;
                 break;
             case 32:
-                this.setWeaponBehaviour(new Lasergun(this.getX(), this.getY(), 'lasergun', 10));
                 this.weaponBehaviour.shoot(this.getX(), this.getY());
                 console.log("pressed space key!");
                 break;

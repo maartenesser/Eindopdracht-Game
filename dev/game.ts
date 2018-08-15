@@ -38,8 +38,8 @@ class Game implements Subject {
         this.powerUp    = new PowerUp(this.player)
 
         //making powerUps and loading them into the game map
-        // this.powerUp.makePowerUp(400,700 ,"lasergun")
-        // this.powerUp.makePowerUp(200, 700, 'doublelasergun')
+        this.powerUp.makePowerUp(400,700 ,"lasergun")
+        this.powerUp.makePowerUp(200, 700, 'doublelasergun')
 
 
         console.log(this.powerUp.powerUps)

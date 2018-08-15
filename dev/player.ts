@@ -12,7 +12,7 @@ class Player extends GameObject {
     constructor(  x:number, y:number, el:string, g:Game) { 
         super( x, y, el)
         this.game = g
-        // this.setWeaponBehaviour (new Lasergun(this.getX(), this.getY(), 'lasergun', 10))
+        this.setWeaponBehaviour (new Lasergun(this.getX(), this.getY(), 'lasergun', 10))
         this.drawForeground()
         this.move()
 
@@ -64,7 +64,7 @@ class Player extends GameObject {
                 this.yspeed = 5
                 break
             case 32:
-            this.setWeaponBehaviour (new Lasergun(this.getX(), this.getY(), 'lasergun', 10))
+            // this.setWeaponBehaviour (new Lasergun(this.getX(), this.getY(), 'lasergun', 10))
                 this.weaponBehaviour.shoot(this.getX(), this.getY())
                 console.log("pressed space key!")
                 break
