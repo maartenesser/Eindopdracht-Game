@@ -13,7 +13,7 @@ Dit is een game die lijkt op space invators.
 - tsconfig.json bevat instellingen voor het compileren.
 
 ## Bekijken
-Open index.html in `localhost`
+Open index.html in `Browser`
 
 ## Game uitleg
 
@@ -30,9 +30,12 @@ $ git clone https://github.com/maartenesser/Eindopdracht-Game
 - Door enemies te doden krijg je punten en upgrades.
 - Het doel van het spel is zoveel mogelijk punten te halen.
 
-## UML | Klassendiagram (niet vergeten)
+## UML | Klassendiagram
 
-## Game moet live staan op een webpage staan (Niet vergeten)
+https://spacenebula.maartensolutions.nl/SpaceNebula.pdf
+
+## Game moet live staan op een webpage staan
+
 Link naar de live game: https://spacenebula.maartensolutions.nl
 
 ## Singleton
