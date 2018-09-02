@@ -69,7 +69,7 @@ class LasergunPack extends GameObject {
 }
 ```
 
-Om de laserGunPack die van het gameObject erft te maken moet ik eerst de super method aan roepen in de constructor om de `x, y` en `el` in te vullen.
+Om de laserGunPack te maken moet ik eerst de super method aangeroepen worden in de constructor om de `x, y` en `el` in te vullen.
 
 ```
 super(x, y, el)
@@ -79,9 +79,7 @@ om de laserGunPack in de game te laten zien gebruik ik deze method die ook van h
 ```
 super.drawForeground()
 ```
-
-//een ander voorbeeld is de Enemy class. Die erft van enemymovement. 
-// Polymorfisme afmaken
+Bij de andere classen: Player, Lasergun, DoubleLasergun, doubleLasergunPack, lasergunPack. wordt ook de `super.drawForeground()` gebruikt. Ze gebruiken allemaal de zelfde super class met de drawforground method maar voor elke class wordt er een ander beeld geladen.
 
 ## Strategy Pattern
 Hieronder beschrijf ik waar ik het strategy pattern heb toegevoegd. Elk wapen implementeerd de interface WeaponBehaviour.
