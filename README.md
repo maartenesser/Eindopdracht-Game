@@ -79,7 +79,21 @@ om de laserGunPack in de game te laten zien gebruik ik deze method die ook van h
 ```
 super.drawForeground()
 ```
-Bij de andere classen: Player, Lasergun, DoubleLasergun, doubleLasergunPack, lasergunPack. wordt ook de `super.drawForeground()` gebruikt. Ze gebruiken allemaal de zelfde super class met de drawforground method maar voor elke class wordt er een ander beeld geladen.
+Bij de andere classen: Player, Lasergun, DoubleLasergun, doubleLasergunPack, lasergunPack. wordt ook de `super.drawForeground()` gebruikt. Omdat ik dan elk object dat van die classen wordt aangemaakt toevoeg aan een array met gameObjects kan ik hier doorheen loopen en ze allemaal updaten zonder dat ik weer elke object appart moet aanroepen. In mijn code ziet het er als volgd uit.
+
+Eerst het toevoegen van de objecten aan de `gameObjects` array. Dit doe ik onderanderen bij de Player classe.
+```
+        this.game.GameObjects.push(this)
+
+```
+Vervolgens update is alle `gameObjects` in de game.ts met deze funktie.
+
+```
+// updating every gameobject in gameobjects array
+for (let i = 0, len = this.GameObjects.length; i < len; i++) {
+   this.GameObjects[i].update()
+}
+```
 
 ## Strategy Pattern
 Hieronder beschrijf ik waar ik het strategy pattern heb toegevoegd. Elk wapen implementeerd de interface WeaponBehaviour.
